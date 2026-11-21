@@ -10,7 +10,7 @@
    最终：max(0, 基础值 + 奖励)   （下限在加完奖励后取）
    ──────────────────────────────────────────────────────────── */
 
-const MAX_SCORE = 10002200;   // 全 Pure + 全大 Pure 的理论值上限（物量 2200）
+const MAX_SCORE = 10000000;   // 全 Pure + 全大 Pure 的理论值上限（物量 2200）
 const CLEAR_BONUS = 0.2;
 
 function basePtt(score, diff) {
@@ -89,9 +89,9 @@ function render() {
 
   const warns = [];
   if (score < 0) { score = 0; warns.push('分数不能为负，已按 0 计算。'); }
-  if (score > MAX_SCORE) { score = MAX_SCORE; warns.push('分数超过理论值上限 ' + num(MAX_SCORE) + '，已按上限计算。'); }
+  if (score > MAX_SCORE) { score = MAX_SCORE; warns.push('分数已达到Pure Memory，已按PM计算。'); }
   if (diff < 0) { diff = 0; warns.push('定数不能为负，已按 0 计算。'); }
-  if (diff > 20) { diff = 20; warns.push('定数超过 20，已按 20 计算。'); }
+  if (diff > 12) { diff = 12; warns.push('定数超过 12，已按 12 计算。'); }
 
   const r = calc(score, diff, clear);
   const other = calc(score, diff, !clear);
