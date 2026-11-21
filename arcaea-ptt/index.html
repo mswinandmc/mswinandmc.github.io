@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Arcaea 单曲 ptt 计算器 · v7.0+</title>
+<meta name="description" content="Arcaea v7.0+ 单曲潜力值计算器：输入结算分数与谱面定数，勾选是否通关（TC），自动计入 +0.200 通关奖励。" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="bg-glow" aria-hidden="true"></div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="badge"><span class="dot"></span>Arcaea 移动版 v7.0+ 潜力值机制</div>
+    <h1>单曲 <span class="accent">ptt</span> 计算器</h1>
+    <p class="lede">
+      输入本次结算分数与谱面定数，勾选「本次通关」，实时得到单曲潜力值。
+      通关（TC / Easy Clear / FR / PM）额外 <b>+0.200</b>，Track Lost 不加。
+    </p>
+  </header>
+
+  <main class="grid">
+    <!-- ── 输入 ── -->
+    <section class="card" aria-labelledby="input-title">
+      <h2 id="input-title" class="card-title">输入</h2>
+
+      <div class="field">
+        <label for="score">结算分数</label>
+        <div class="input-row">
+          <input id="score" type="number" inputmode="numeric" min="0" max="10002200" step="1"
+                 value="9950000" placeholder="例如 9950000" autocomplete="off" />
+          <span class="unit">分</span>
+        </div>
+        <p class="hint">0 – 10,002,200（理论值上限，全 Pure + 全大 Pure）</p>
+      </div>
+
+      <div class="field">
+        <label for="diff">谱面定数</label>
+        <div class="input-row">
+          <input id="diff" type="number" inputmode="decimal" min="0" max="20" step="0.1"
+                 value="10.5" placeholder="例如 10.5" autocomplete="off" />
+          <span class="unit">定数</span>
+        </div>
+        <p class="hint">一位小数；当前版本最高定数为 12.0</p>
+      </div>
+
+      <div class="field">
+        <span class="label-like">本次成绩的通关状态</span>
+        <label class="check" for="clear">
+          <input id="clear" type="checkbox" checked />
+          <span class="box" aria-hidden="true"></span>
+          <span class="check-text">
+            <b>本次通关（TC 及以上）</b>
+            <small>TC / Easy Clear / FR / PM 都算通关 → +0.200；TL 不算</small>
+          </span>
+        </label>
+        <p class="hint muted">奖励只绑本次通关状态，与该谱历史是否 TC 无关。</p>
+      </div>
+
+      <div class="presets">
+        <span class="presets-label">快速示例</span>
+        <button type="button" class="chip" data-score="10000000" data-diff="12.0" data-clear="1">PM · 12.0</button>
+        <button type="button" class="chip" data-score="9950000" data-diff="10.5" data-clear="1">TC · 9,950,000</button>
+        <button type="button" class="chip" data-score="9950000" data-diff="10.5" data-clear="0">TL · 9,950,000</button>
+        <button type="button" class="chip" data-score="8600000" data-diff="9.0" data-clear="0">8,600,000 边界</button>
+      </div>
+    </section>
+
+    <!-- ── 结果 ── -->
+    <section class="card result" aria-labelledby="result-title">
+      <div class="result-head">
+        <h2 id="result-title" class="card-title">单曲潜力值</h2>
+        <span id="grade" class="grade">EX+</span>
+      </div>
+
+      <div class="big" id="ptt" aria-live="polite">12.450</div>
+      <div class="big-sub" id="summary">定数 10.5 · 9,950,000 分 · 通关</div>
+
+      <dl class="breakdown" id="breakdown">
+        <div><dt>基础值（分数换算）</dt><dd id="row-base">12.250</dd></div>
+        <div><dt>通关奖励</dt><dd id="row-bonus" class="plus">+0.200</dd></div>
+        <div><dt>下限修正（max 0）</dt><dd id="row-floor" class="dim">—</dd></div>
+        <div class="total"><dt>最终单曲 ptt</dt><dd id="row-total">12.450</dd></div>
+      </dl>
+
+      <p class="compare" id="compare">若本次 Track Lost：<b>12.250</b>（少 0.200）</p>
+
+      <div class="chart-box">
+        <canvas id="chart" height="220" aria-label="ptt 随分数变化曲线"></canvas>
+        <div class="legend">
+          <span><i class="sw sw-tc"></i>通关（+0.200）</span>
+          <span><i class="sw sw-tl"></i>Track Lost</span>
+          <span class="legend-now">竖线：当前分数</span>
+        </div>
+      </div>
+
+      <p class="warn" id="warn" hidden></p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>公式依据 Arcaea 移动版 v7.0（v7.3.0 仍适用）：<code>score ≥ 1e7 → 定数+2</code>；<code>9.8e6 ≤ score &lt; 1e7 → 定数+1+(score−9.8e6)/200000</code>；<code>score &lt; 9.8e6 → 定数+(score−9.5e6)/300000</code>，再 <code>+0.2（通关）</code>，下限 0。</p>
+    <p class="muted">结果保留三位小数展示（四舍五入）；下限与通关奖励都按未取整的原始值计算。全部计算在你的浏览器本地完成，不上传任何数据。</p>
+  </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
