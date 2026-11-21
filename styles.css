@@ -112,6 +112,19 @@ h1 {
   border: 1px solid rgba(124, 231, 255, .14);
 }
 
+.link--bili:hover {
+  border-color: rgba(251, 114, 153, .42);
+  background: rgba(251, 114, 153, .075);
+}
+.link--bili .ico {
+  color: #fb7299;
+  background: rgba(251, 114, 153, .08);
+  border-color: rgba(251, 114, 153, .18);
+}
+.link.link--bili:hover .arrow {
+  color: #fb7299;
+}
+
 .txt {
   flex: 1;
   min-width: 0;
